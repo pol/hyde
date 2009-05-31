@@ -8,16 +8,6 @@ module Jekyll
       attr_accessor :lsi
     end
 
-    MATCHER = /^(.+\/)*(\d+-\d+-\d+)-(.*)(\.[^.]+)$/
-
-    # Post name validator. Post filenames must be like:
-    #   2008-11-05-my-awesome-post.textile
-    #
-    # Returns <Bool>
-    def self.valid?(name)
-      name =~ MATCHER
-    end
-
     attr_accessor :site, :date, :slug, :ext, :published, :data, :content, :output, :tags
     attr_writer :categories
 
@@ -37,9 +27,13 @@ module Jekyll
       @base = File.join(source, dir, '_posts')
       @name = name
 
+      if File.file?(File.join(@base, name))
+        self.read_yaml(@base, name)
+      else
+        self.data = {}
+      end
+
       self.categories = dir.split('/').reject { |x| x.empty? }
-      self.process(name)
-      self.read_yaml(@base, name)
 
       if self.data.has_key?('published') && self.data['published'] == false
         self.published = false
@@ -68,6 +62,8 @@ module Jekyll
           end
         end
       end
+
+      self.process(name) if published?
     end
 
     # Spaceship is based on Post#date
@@ -77,15 +73,36 @@ module Jekyll
       self.date <=> other.date
     end
 
+    # Returns <Bool>
+    def published?
+      published
+    end
+
+    # Post validator. Every post must have e.g. a title.
+    #
+    # Returns <Bool>
+    def valid?
+      (self.ext && self.slug && self.date && self.url) ? true : false
+    end
+
     # Extract information from the post filename
     #   +name+ is the String filename of the post file
     #
     # Returns nothing
-    def process(name)
-      m, cats, date, slug, ext = *name.match(MATCHER)
-      self.date = Time.parse(date)
-      self.slug = slug
-      self.ext = ext
+    def process(nn)
+      name = nn.dup
+      if name.sub!(/(\d+-\d+-\d+)-/, '')
+        self.date = Time.parse($1)
+      else
+        self.date = Time.parse(self.data["date"]) if self.data["date"]
+      end
+      matcher = /^(.+\/)*(.*)(\.[^.]+)$/
+      m, cats, slug, self.ext = *name.match(matcher)
+      if self.data && self.data["title"]
+        self.slug = self.data["title"].split.collect { |i| i.downcase }.join("-")
+      else
+        self.slug = slug
+      end
     end
 
     # The generated directory into which the post will be placed

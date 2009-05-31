@@ -17,14 +17,6 @@ class TestPost < Test::Unit::TestCase
       @site = Site.new(Jekyll.configuration)
     end
 
-    should "ensure valid posts are valid" do
-      assert Post.valid?("2008-10-19-foo-bar.textile")
-      assert Post.valid?("foo/bar/2008-10-19-foo-bar.textile")
-
-      assert !Post.valid?("lol2008-10-19-foo-bar.textile")
-      assert !Post.valid?("blah")
-    end
-
     context "processing posts" do
       setup do
         @post = Post.allocate
@@ -257,6 +249,13 @@ class TestPost < Test::Unit::TestCase
 
           assert File.directory?(dest_dir)
           assert File.exists?(File.join(dest_dir, 'foo-bar', 'index.html'))
+        end
+
+        should "read post that lacks a date in the filename" do
+          post = setup_post("foo-bar.textile")
+          assert post.date.class == Time
+          assert post.data["title"] == "Foo Bar Baz"
+          assert post.url == "/2009/05/31/foo-bar-baz.html"
         end
 
         should "insert data" do

@@ -72,14 +72,11 @@ module Jekyll
 
       # first pass processes, but does not yet render post content
       entries.each do |f|
-        if Post.valid?(f)
-          post = Post.new(self, self.source, dir, f)
-
-          if post.published
-            self.posts << post
-            post.categories.each { |c| self.categories[c] << post }
-            post.tags.each { |c| self.tags[c] << post }
-          end
+        post = Post.new(self, self.source, dir, f)
+        if post.valid? && post.published?
+          self.posts << post
+          post.categories.each { |c| self.categories[c] << post }
+          post.tags.each { |c| self.tags[c] << post }
         end
       end
 

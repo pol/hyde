@@ -1,0 +1,9 @@
+---
+layout: default
+title: Foo Bar Baz
+date: 2009-05-31 00:53 +02:00
+---
+
+h1. {{ page.title }}
+
+No date in filename \o/
