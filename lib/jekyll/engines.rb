@@ -56,6 +56,11 @@ module Jekyll
     def self.rdiscount(content)
       RDiscount.new(content).to_html
     end
+
+    def self.haml(content)
+      require "haml"
+      Haml::Engine.new(content, :suppress_eval => true).render
+    end
   end
 
 end

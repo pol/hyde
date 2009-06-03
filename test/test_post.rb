@@ -234,6 +234,12 @@ class TestPost < Test::Unit::TestCase
           assert_equal "<<< <h1>Foo Bar</h1>\n<p>Best <strong>post</strong> ever</p> >>>", post.output
         end
 
+        should "render haml properly" do
+          post = setup_post("2009-06-03-haml-rocks.haml")
+          do_render(post)
+          assert_equal "<<< <h1>Haml is cool</h1>\n<p></p>\n >>>", post.output
+        end
+
         should "write properly" do
           post = setup_post("2008-10-18-foo-bar.textile")
           do_render(post)
