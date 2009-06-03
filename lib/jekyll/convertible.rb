@@ -66,6 +66,7 @@ module Jekyll
       layout = layouts[self.data["layout"]]
       while layout
         payload = payload.deep_merge({"content" => self.output, "page" => layout.data})
+        layout.transform
         self.output = Liquid::Template.parse(layout.content).render(payload, info)
 
         layout = layouts[layout.data["layout"]]
