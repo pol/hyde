@@ -1,9 +1,11 @@
 ---
 layout: default
-title: Some Tags
+title: Haml is indeed cool
 ---
 
 %h1 Haml is cool
 
-%p= "1 + 1 is #{1+1}" # should be blank when rendered
+%p
+  The title of this page is "{{ page.title }}"
 
+%p= "1 + 1 is #{1+1}" # should be blank when rendered
