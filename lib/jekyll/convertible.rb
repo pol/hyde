@@ -25,32 +25,25 @@ module Jekyll
       end
     end
 
-    # Transform the contents based on the file extension.
+    # Transform the contents based on content type.
     #
     # Returns nothing
     def transform
-      case self.content_type
-      when 'textile'
-        self.ext = ".html"
-        self.content = self.site.textile(self.content)
-      when 'markdown'
-        self.ext = ".html"
-        self.content = self.site.markdown(self.content)
-      end
+      return if %w(html xml atom rss).include?(self.content_type) # no transformation needed
+      self.content = Engines.method(self.content_type.to_sym).call(self.content)
+      self.ext = ".html"
     end
 
     # Determine which formatting engine to use based on this convertible's
     # extension
     #
-    # Returns one of :textile, :markdown or :unknown
+    # Returns the content type as a string, usually the same as the extension
     def content_type
       case self.ext[1..-1]
-      when /textile/i
-        return 'textile'
-      when /markdown/i, /mkdn/i, /md/i
+      when /markdown/i, /mkdn/i, /md/i # aliases for the Markdown format
         return 'markdown'
       end
-      return 'unknown'
+      ext[1..-1]
     end
 
     # Add any necessary layouts to this convertible document

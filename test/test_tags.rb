@@ -16,13 +16,12 @@ class TestTags < Test::Unit::TestCase
     else
       payload = {"content_type" => "textile"}
     end
-
     @result = Liquid::Template.parse(content).render(payload, info)
 
     if markdown
-      @result = site.markdown(@result)
+      @result = Engines.markdown(@result)
     else
-      @result = site.textile(@result)
+      @result = Engines.textile(@result)
     end
   end
 
