@@ -36,7 +36,7 @@ module Jekyll
             MaRuKu::Globals[:html_png_url] = config['maruku']['png_url']
           end
         rescue LoadError
-          puts 'You must have the rdiscount gem installed first'
+          puts 'The maruku gem is required for markdown support!'
         end
       end
     end
