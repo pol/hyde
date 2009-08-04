@@ -98,7 +98,9 @@ module Jekyll
       if name.sub!(/(\d+-\d+-\d+)-/, '')
         self.date = Time.parse($1)
       else
-        self.date = Time.parse(self.data["date"]) if self.data["date"]
+        if date = self.data["date"]
+          self.date = date.kind_of?(Time) ? date : Time.parse(date)
+        end
       end
       matcher = /^(.+\/)*(.*)(\.[^.]+)$/
       m, cats, slug, self.ext = *name.match(matcher)
