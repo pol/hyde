@@ -1,6 +1,16 @@
 h1. Hyde
 
 An experimental fork of Jekyll, by "Bjørn Arild Mæland":http://chrononaut.net/.
+Has its own binary so it can easily be used alongside the main Jekyll gem (I
+do!). New features include:
+
+* Support for other page transformation engines (HAML, etc).
+* Decoupling from the filesystem - no dictation of what your post files should
+  be named.
+
+Attempt is made to refactor the code base where possible (e.g. the Site class in
+Hyde is currently much smaller/more coherent than in Jekyll). Hopefully there
+will be interest in pulling (some) of these changes back into the Jekyll mainline.
 
 h1. Jekyll
 
