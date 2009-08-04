@@ -1,17 +1,10 @@
 require 'rubygems'
-
-def ruby19?
-  RUBY_VERSION =~ /1.9/
-end
-
-unless ruby19?
-  gem 'RedCloth', '= 4.1.0'
-  require 'redgreen'
-end
+gem 'RedCloth', '= 4.2.1'
 
 require File.join(File.dirname(__FILE__), *%w[.. lib jekyll])
 
 require 'test/unit'
+require 'redgreen'
 require 'shoulda'
 require 'rr'
 
