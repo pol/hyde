@@ -38,6 +38,9 @@ module Jekyll
         rescue LoadError
           puts 'The maruku gem is required for markdown support!'
         end
+      else
+        raise "Invalid Markdown processor: '#{config['markdown']}' -- " +
+              "did you mean 'maruku' or 'rdiscount'? "
       end
     end
 
