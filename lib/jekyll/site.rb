@@ -115,7 +115,7 @@ module Jekyll
       base = File.join(self.source, dir)
       entries = filter_entries(Dir.entries(base))
       directories = entries.select { |e| File.directory?(File.join(base, e)) }
-      files = entries.reject { |e| File.directory?(File.join(base, e)) }
+      files = entries.reject { |e| File.directory?(File.join(base, e)) || File.symlink?(File.join(base, e)) }
 
       # we need to make sure to process _posts *first* otherwise they
       # might not be available yet to other templates as {{ site.posts }}
@@ -133,7 +133,6 @@ module Jekyll
             paginate_posts(f, dir)
           else
             first3 = File.open(File.join(self.source, dir, f)) { |fd| fd.read(3) }
-
             if first3 == "---"
               # file appears to have a YAML header so process it as a page
               page = Page.new(self, self.source, dir, f)
