@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Foo Bar Baz
-date: 2009-05-31 00:53 +02:00
+date: 2009-05-31 00:53
 ---
 
 h1. {{ page.title }}

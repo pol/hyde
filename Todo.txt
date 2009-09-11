@@ -1,0 +1,2 @@
+* Add support for SASS
+* add more HAML tests (layouts render, but not their content)
